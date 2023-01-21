@@ -17,13 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.looprich.timetracker.App
 import ru.looprich.timetracker.R
-import ru.looprich.timetracker.ui.theme.*
+import ru.looprich.timetracker.ui.theme.colorGreen600
+import ru.looprich.timetracker.ui.theme.colorWhite
 
 @Composable
 fun LoginScreen(
+    app: App,
     navigateToProjects: () -> Unit
 ) {
     val mContext = LocalContext.current
@@ -74,7 +76,15 @@ fun LoginScreen(
         )
 
         Button(
-            onClick = { authentication(login.value, password.value, mContext, navigateToProjects) },
+            onClick = {
+                authentication(
+                    app,
+                    login.value,
+                    password.value,
+                    mContext,
+                    navigateToProjects
+                )
+            },
             colors = ButtonDefaults.buttonColors(backgroundColor = colorGreen600),
         ) {
             Text(stringResource(R.string.loginButtonText), color = colorWhite)
@@ -83,6 +93,7 @@ fun LoginScreen(
 }
 
 fun authentication(
+    app: App,
     login: String,
     password: String,
     mContext: Context,
@@ -96,7 +107,10 @@ fun authentication(
         ).show()
     }
     if (login.isNotEmpty() and password.isNotEmpty()) {
-        if ((login == "test") and (password == "test")) {
+        val successfulAuthentication: Boolean =
+            app.userRepo?.checkExist(login, password) == true
+
+        if (successfulAuthentication) {
             Toast.makeText(
                 mContext,
                 mContext.getString(R.string.successfulLogin),
@@ -111,10 +125,4 @@ fun authentication(
             ).show()
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewLoginScreen() {
-    LoginScreen { }
 }

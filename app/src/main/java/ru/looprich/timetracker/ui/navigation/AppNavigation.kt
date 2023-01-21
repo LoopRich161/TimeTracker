@@ -5,11 +5,13 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ru.looprich.timetracker.App
 import ru.looprich.timetracker.ui.screens.login.LoginScreen
 import ru.looprich.timetracker.ui.screens.projects.ProjectsScreen
 
 @Composable
 fun AppNavigation(
+    app: App,
     startDestination: String = AppDestinations.LOGIN_ROUTE.route
 ) {
 
@@ -26,6 +28,7 @@ fun AppNavigation(
             AppDestinations.LOGIN_ROUTE.route
         ) {
             LoginScreen(
+                app,
                 navigateToProjects = actions.navigateToProjects
             )
         }
