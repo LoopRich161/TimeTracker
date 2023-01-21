@@ -9,9 +9,9 @@ android {
 
 	defaultConfig {
 		applicationId "ru.looprich.timetracker"
-		minSdk 21
+		minSdk 26
 		targetSdk 33
-		versionCode 26
+		versionCode 1
 		versionName "1.0"
 
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
