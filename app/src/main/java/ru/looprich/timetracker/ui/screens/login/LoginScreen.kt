@@ -1,5 +1,6 @@
 package ru.looprich.timetracker.ui.screens.login
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,76 +12,108 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.looprich.timetracker.R
+import ru.looprich.timetracker.ui.theme.*
 
 @Composable
 fun LoginScreen(
-    navigateToProjects : () -> Unit
-)
-{
+    navigateToProjects: () -> Unit
+) {
     val mContext = LocalContext.current
 
     Column(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
 
-        val login = remember { mutableStateOf("") }
-        val password = remember { mutableStateOf("") }
-        var passwordVisible = remember { mutableStateOf(false) }
+        Text(mContext.getString(R.string.appName), color = colorGreen600)
 
-
-        OutlinedTextField(value = login.value,
-            onValueChange = { login.value = it },
-            label = { Text(text = "Логин") },
-            modifier = Modifier.fillMaxWidth()
+        Spacer(
+            modifier = Modifier.height(100.dp)
         )
 
-        OutlinedTextField(value = password.value,
-            onValueChange = { password.value = it },
-            label = { Text(text = "Пароль") },
+        val login = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
+        val passwordVisible = remember { mutableStateOf(false) }
+
+
+        OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if(passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+            value = login.value,
+            onValueChange = { login.value = it },
+            label = { Text(text = mContext.getString(R.string.loginHint)) })
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = password.value,
+            onValueChange = { password.value = it },
+            label = { Text(text = mContext.getString(R.string.passwordHint)) },
+            visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
-                val description = if(passwordVisible.value) "Hide password" else "Show password"
+                val description = if (passwordVisible.value) "Hide password" else "Show password"
 
                 IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
                     Icon(imageVector = Icons.Filled.Lock, description)
                 }
             })
 
-        Spacer(modifier = Modifier.height(100.dp))
+
+        Spacer(
+            modifier = Modifier.height(100.dp)
+        )
 
         Button(
-            onClick = {
-                if(login.value.isEmpty() or password.value.isEmpty())
-                {
-                    Toast.makeText(mContext, "Заполните логин или пароль", Toast.LENGTH_SHORT).show()
-                }
-                if(login.value.isNotEmpty() and password.value.isNotEmpty())
-                {
-                    if((login.value == "test") and (password.value == "test"))
-                    {
-                        Toast.makeText(mContext, "Вход...", Toast.LENGTH_SHORT).show()
-                        navigateToProjects()
-                    } else
-                    {
-                        Toast.makeText(mContext, "Неверный логин или пароль", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58)),
+            onClick = { authentication(login.value, password.value, mContext, navigateToProjects) },
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorGreen600),
         ) {
-            Text("Вход", color = Color.White)
+            Text(mContext.getString(R.string.loginButtonText), color = colorWhite)
         }
     }
+}
+
+fun authentication(
+    login: String,
+    password: String,
+    mContext: Context,
+    successfulAction: () -> Unit
+) {
+    if (login.isEmpty() or password.isEmpty()) {
+        Toast.makeText(
+            mContext,
+            mContext.getString(R.string.fieldsNotFilledAlert),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+    if (login.isNotEmpty() and password.isNotEmpty()) {
+        if ((login == "test") and (password == "test")) {
+            Toast.makeText(
+                mContext,
+                mContext.getString(R.string.successfulLogin),
+                Toast.LENGTH_SHORT
+            ).show()
+            successfulAction()
+        } else {
+            Toast.makeText(
+                mContext,
+                mContext.getString(R.string.wrongLoginOrPassword),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewLoginScreen() {
+    LoginScreen { }
 }

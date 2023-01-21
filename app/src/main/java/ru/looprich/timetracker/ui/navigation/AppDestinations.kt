@@ -1,9 +1,6 @@
 package ru.looprich.timetracker.ui.navigation
 
-object AppDestinations {
+enum class AppDestinations(val route: String) {
 
-    const val LOGIN_ROUTE = "login"
-
-    const val PROJECTS_ROUTE = "projects"
-
+    LOGIN_ROUTE("login"), PROJECTS_ROUTE("projects");
 }
