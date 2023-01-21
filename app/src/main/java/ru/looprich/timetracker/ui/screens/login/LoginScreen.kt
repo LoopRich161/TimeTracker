@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -35,7 +36,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center
     ) {
 
-        Text(mContext.getString(R.string.appName), color = colorGreen600)
+        Text(stringResource(R.string.appName), color = colorGreen600)
 
         Spacer(
             modifier = Modifier.height(100.dp)
@@ -50,13 +51,13 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth(),
             value = login.value,
             onValueChange = { login.value = it },
-            label = { Text(text = mContext.getString(R.string.loginHint)) })
+            label = { Text(text = stringResource(R.string.loginHint)) })
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = password.value,
             onValueChange = { password.value = it },
-            label = { Text(text = mContext.getString(R.string.passwordHint)) },
+            label = { Text(text = stringResource(R.string.passwordHint)) },
             visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
@@ -76,7 +77,7 @@ fun LoginScreen(
             onClick = { authentication(login.value, password.value, mContext, navigateToProjects) },
             colors = ButtonDefaults.buttonColors(backgroundColor = colorGreen600),
         ) {
-            Text(mContext.getString(R.string.loginButtonText), color = colorWhite)
+            Text(stringResource(R.string.loginButtonText), color = colorWhite)
         }
     }
 }
