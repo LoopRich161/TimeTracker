@@ -5,11 +5,11 @@ import ru.looprich.timetracker.models.User
 
 class UserRepository(private val userDao: UserDao) {
 
-    fun checkExist(login: String, password: String): Boolean {
-        return userDao.checkExist(login, password)
+    fun get(login: String, password: String): User? {
+        return userDao.getByLoginAndPassword(login, password)
     }
 
-    fun addUser(login: String, password: String) {
+    fun add(login: String, password: String) {
         userDao.insert(User(login, password))
     }
 

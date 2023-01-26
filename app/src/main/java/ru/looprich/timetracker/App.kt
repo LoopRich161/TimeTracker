@@ -19,9 +19,9 @@ class App : Application() {
 
     private fun createTestUser() {
         val userTest = User("test", "test")
-        if (!userRepo?.checkExist(userTest.login, userTest.password)!!) {
-            userRepo!!.addUser(userTest.login, userTest.password)
-            println("Inserted new user: test,test")
+        if (userRepo?.get(userTest.login, userTest.password) == null) {
+            userRepo?.add(userTest.login, userTest.password)
+            println("Inserted new user: test, test")
         }
     }
 }

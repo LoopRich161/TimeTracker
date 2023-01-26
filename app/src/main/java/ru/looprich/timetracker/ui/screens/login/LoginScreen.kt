@@ -28,7 +28,7 @@ fun LoginScreen(
     app: App,
     navigateToProjects: () -> Unit
 ) {
-    val mContext = LocalContext.current
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -78,11 +78,11 @@ fun LoginScreen(
         Button(
             onClick = {
                 authentication(
-                    app,
-                    login.value,
-                    password.value,
-                    mContext,
-                    navigateToProjects
+                    app = app,
+                    login = login.value,
+                    password = password.value,
+                    context = context,
+                    successfulAction = navigateToProjects
                 )
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = colorGreen600),
@@ -96,31 +96,29 @@ fun authentication(
     app: App,
     login: String,
     password: String,
-    mContext: Context,
+    context: Context,
     successfulAction: () -> Unit
 ) {
     if (login.isEmpty() or password.isEmpty()) {
         Toast.makeText(
-            mContext,
-            mContext.getString(R.string.fieldsNotFilledAlert),
+            context,
+            context.getString(R.string.fieldsNotFilledAlert),
             Toast.LENGTH_SHORT
         ).show()
     }
-    if (login.isNotEmpty() and password.isNotEmpty()) {
-        val successfulAuthentication: Boolean =
-            app.userRepo?.checkExist(login, password) == true
 
-        if (successfulAuthentication) {
+    if (login.isNotEmpty() and password.isNotEmpty()) {
+        app.userRepo?.get(login, password)?.let {
             Toast.makeText(
-                mContext,
-                mContext.getString(R.string.successfulLogin),
+                context,
+                context.getString(R.string.successfulLogin),
                 Toast.LENGTH_SHORT
             ).show()
             successfulAction()
-        } else {
+        } ?: run {
             Toast.makeText(
-                mContext,
-                mContext.getString(R.string.wrongLoginOrPassword),
+                context,
+                context.getString(R.string.wrongLoginOrPassword),
                 Toast.LENGTH_SHORT
             ).show()
         }
