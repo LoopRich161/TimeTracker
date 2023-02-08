@@ -9,8 +9,8 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.getByLoginAndPassword(login, password)
     }
 
-    fun add(login: String, password: String) {
-        userDao.insert(User(login, password))
+    fun create(user: User) {
+        userDao.insert(user)
     }
 
 }

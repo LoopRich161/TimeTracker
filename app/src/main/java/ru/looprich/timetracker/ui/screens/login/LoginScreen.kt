@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ru.looprich.timetracker.App
 import ru.looprich.timetracker.R
 import ru.looprich.timetracker.ui.theme.colorGreen600
@@ -38,7 +39,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center
     ) {
 
-        Text(stringResource(R.string.appName), color = colorGreen600)
+        Text(text = stringResource(R.string.appName), fontSize = 32.sp, color = colorGreen600)
 
         Spacer(
             modifier = Modifier.height(100.dp)
@@ -87,7 +88,7 @@ fun LoginScreen(
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = colorGreen600),
         ) {
-            Text(stringResource(R.string.loginButtonText), color = colorWhite)
+            Text(text = stringResource(R.string.loginButtonText), color = colorWhite)
         }
     }
 }
@@ -108,7 +109,9 @@ fun authentication(
     }
 
     if (login.isNotEmpty() and password.isNotEmpty()) {
-        app.userRepo?.get(login, password)?.let {
+        val user = app.userRepo.get(login, password)
+        user?.let {
+            app.user = user
             Toast.makeText(
                 context,
                 context.getString(R.string.successfulLogin),

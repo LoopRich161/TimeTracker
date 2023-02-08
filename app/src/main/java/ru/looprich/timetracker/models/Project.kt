@@ -3,15 +3,14 @@ package ru.looprich.timetracker.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
-@Entity(tableName = "users")
-data class User(
+@Entity(tableName = "projects")
+data class Project(
 
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
 
-    val login: String,
+    val name: String,
 
-    val password: String
+    val completed: Boolean = false
 
 )
